@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Product>VMelnalksnis.Testcontainers.Keycloak</Product>
+		<ProductId>VMelnalksnis.Testcontainers.Keycloak</ProductId>
+		<Description>Testcontainers container for Keycloak</Description>
+		<PackageTags>testcontainers keycloak</PackageTags>
+
+		<IsPackable>true</IsPackable>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+		<NoWarn>CS8002</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Testcontainers" />
+	</ItemGroup>
+
+</Project>

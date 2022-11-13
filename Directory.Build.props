@@ -29,6 +29,12 @@
 		<PackageReference Include="DotNet.ReproducibleBuilds.Isolated">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="IsExternalInit">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Nullable">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Jetbrains.Annotations">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>

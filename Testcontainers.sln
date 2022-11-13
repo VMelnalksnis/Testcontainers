@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Testcontainers.Keycloak", "source\VMelnalksnis.Testcontainers.Keycloak\VMelnalksnis.Testcontainers.Keycloak.csproj", "{26ADB908-FD07-42CC-BC24-99982FDF204C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Testcontainers.Keycloak.Tests", "tests\VMelnalksnis.Testcontainers.Keycloak.Tests\VMelnalksnis.Testcontainers.Keycloak.Tests.csproj", "{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,11 +60,20 @@ Global
 		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26ADB908-FD07-42CC-BC24-99982FDF204C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26ADB908-FD07-42CC-BC24-99982FDF204C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26ADB908-FD07-42CC-BC24-99982FDF204C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26ADB908-FD07-42CC-BC24-99982FDF204C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C4073D1B-98B8-473D-913A-2F9D4C1A6724} = {1F1C2CED-80E8-47F7-BA04-900776D8F9A6}
 		{C3E5EEB7-B5EF-485B-8EB8-84D561D42425} = {3C84AD94-86DE-4753-B57C-4BA0A1F3B767}
 		{239AECBE-9549-4651-B1D0-A04D14CB0AFE} = {C3E5EEB7-B5EF-485B-8EB8-84D561D42425}
 		{C7554E19-4B0E-4378-B06B-FC5D9646F92C} = {C3E5EEB7-B5EF-485B-8EB8-84D561D42425}
+		{7C4328D5-DCB6-4AE0-B849-6091FBD5EF33} = {1F1C2CED-80E8-47F7-BA04-900776D8F9A6}
 	EndGlobalSection
 EndGlobal

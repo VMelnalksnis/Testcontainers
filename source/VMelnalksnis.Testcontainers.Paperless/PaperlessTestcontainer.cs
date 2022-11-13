@@ -22,8 +22,6 @@ namespace VMelnalksnis.Testcontainers.Paperless;
 /// <summary>An extended configured <see cref="HostedServiceContainer"/> for paperless.</summary>
 public sealed class PaperlessTestcontainer : HostedServiceContainer
 {
-	private const int _defaultPaperlessPort = 8000;
-
 	[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 	private PaperlessTestcontainer(ITestcontainersConfiguration configuration, ILogger logger)
 		: base(configuration, logger)
@@ -32,7 +30,7 @@ public sealed class PaperlessTestcontainer : HostedServiceContainer
 
 	/// <summary>Gets the base address of the paperless instance.</summary>
 	/// <returns>The base address of the paperless instance.</returns>
-	public Uri GetBaseAddress() => new($"http://localhost:{GetMappedPublicPort(_defaultPaperlessPort)}/");
+	public Uri GetBaseAddress() => new($"http://localhost:{GetMappedPublicPort(ContainerPort)}/");
 
 	/// <summary>Creates a new API token for the default admin user.</summary>
 	/// <returns>A new API token for the default admin user.</returns>
