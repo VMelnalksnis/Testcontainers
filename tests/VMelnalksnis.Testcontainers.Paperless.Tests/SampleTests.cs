@@ -2,7 +2,7 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
-namespace VMelnalksnis.Sample.Tests;
+namespace VMelnalksnis.Testcontainers.Paperless.Tests;
 
 public sealed class SampleTests
 {

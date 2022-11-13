@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Sample", "source\VMelnalksnis.Sample\VMelnalksnis.Sample.csproj", "{9840AD6F-54A6-4CF1-A886-F410BD785133}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Testcontainers.Paperless", "source\VMelnalksnis.Testcontainers.Paperless\VMelnalksnis.Testcontainers.Paperless.csproj", "{9840AD6F-54A6-4CF1-A886-F410BD785133}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C84AD94-86DE-4753-B57C-4BA0A1F3B767}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F1C2CED
 		tests\Directory.Build.props = tests\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Sample.Tests", "tests\VMelnalksnis.Sample.Tests\VMelnalksnis.Sample.Tests.csproj", "{C4073D1B-98B8-473D-913A-2F9D4C1A6724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Testcontainers.Paperless.Tests", "tests\VMelnalksnis.Testcontainers.Paperless.Tests\VMelnalksnis.Testcontainers.Paperless.Tests.csproj", "{C4073D1B-98B8-473D-913A-2F9D4C1A6724}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C3E5EEB7-B5EF-485B-8EB8-84D561D42425}"
 	ProjectSection(SolutionItems) = preProject

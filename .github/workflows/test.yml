@@ -52,6 +52,6 @@ jobs:
       - name: ReSharper annotations
         uses: VMelnalksnis/resharper-inspect-action@v0.2.5
         with:
-          solution: Sample.sln
+          solution: Testcontainers.sln
           resharper-version: 2022.2.4
           treat-warnings-as-errors: true

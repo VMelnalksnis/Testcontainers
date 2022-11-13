@@ -1,11 +1,11 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -e
 
-./restore.sh
+./build/restore.sh
 
 packages=$(dotnet list package --include-transitive --vulnerable)
 
 if [[ "$packages" == *"has the following vulnerable packages"* ]]; then
-	echo packages
+	echo "$packages"
 	exit 1
 fi

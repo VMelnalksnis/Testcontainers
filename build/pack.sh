@@ -1,7 +1,7 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -e
 
-./restore.sh
+./build/restore.sh
 
 version=$(cat version)
 publish_dir="./source/$1/bin/Release"
