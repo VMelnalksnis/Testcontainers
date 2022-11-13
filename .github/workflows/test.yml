@@ -1,0 +1,57 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: actions/setup-dotnet@v3.0.3
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+
+      - run: ./build/test.sh
+
+      - name: Gather Code Coverage
+        if: github.event.schedule == null
+        uses: codecov/codecov-action@v3.1.1
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+  
+  resharper:
+    name: Resharper
+    runs-on: ubuntu-latest
+    if: false #ReSharper currently does not support .NET 7
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: actions/setup-dotnet@v3.0.3
+      - run: ./build/build.sh
+
+      - name: ReSharper annotations
+        uses: VMelnalksnis/resharper-inspect-action@v0.2.5
+        with:
+          solution: Sample.sln
+          resharper-version: 2022.2.4
+          treat-warnings-as-errors: true

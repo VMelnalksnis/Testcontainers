@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Sample", "source\VMelnalksnis.Sample\VMelnalksnis.Sample.csproj", "{9840AD6F-54A6-4CF1-A886-F410BD785133}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C84AD94-86DE-4753-B57C-4BA0A1F3B767}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		global.json = global.json
+		LICENSE = LICENSE
+		nuget.config = nuget.config
+		stylecop.json = stylecop.json
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F1C2CED-80E8-47F7-BA04-900776D8F9A6}"
+	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMelnalksnis.Sample.Tests", "tests\VMelnalksnis.Sample.Tests\VMelnalksnis.Sample.Tests.csproj", "{C4073D1B-98B8-473D-913A-2F9D4C1A6724}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C3E5EEB7-B5EF-485B-8EB8-84D561D42425}"
+	ProjectSection(SolutionItems) = preProject
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\pull_request_template.md = .github\pull_request_template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{239AECBE-9549-4651-B1D0-A04D14CB0AFE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\nuget-vulnerabilities.yml = .github\workflows\nuget-vulnerabilities.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\test.yml = .github\workflows\test.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{C7554E19-4B0E-4378-B06B-FC5D9646F92C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
+		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9840AD6F-54A6-4CF1-A886-F410BD785133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9840AD6F-54A6-4CF1-A886-F410BD785133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9840AD6F-54A6-4CF1-A886-F410BD785133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9840AD6F-54A6-4CF1-A886-F410BD785133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4073D1B-98B8-473D-913A-2F9D4C1A6724}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C4073D1B-98B8-473D-913A-2F9D4C1A6724} = {1F1C2CED-80E8-47F7-BA04-900776D8F9A6}
+		{C3E5EEB7-B5EF-485B-8EB8-84D561D42425} = {3C84AD94-86DE-4753-B57C-4BA0A1F3B767}
+		{239AECBE-9549-4651-B1D0-A04D14CB0AFE} = {C3E5EEB7-B5EF-485B-8EB8-84D561D42425}
+		{C7554E19-4B0E-4378-B06B-FC5D9646F92C} = {C3E5EEB7-B5EF-485B-8EB8-84D561D42425}
+	EndGlobalSection
+EndGlobal
