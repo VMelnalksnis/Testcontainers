@@ -1,3 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+		<Product>VMelnalksnis.Testcontainers.Paperless</Product>
+		<ProductId>VMelnalksnis.Testcontainers.Paperless</ProductId>
+		<Description>Testcontainers container for Paperless</Description>
+		<PackageTags>testcontainers paperless</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+
+		<IsPackable>true</IsPackable>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+		<NoWarn>CS8002</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Testcontainers" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Net.Http.Json" />
+	</ItemGroup>
+
 </Project>
