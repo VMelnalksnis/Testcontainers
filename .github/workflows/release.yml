@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         project:
+          - VMelnalksnis.Testcontainers.Keycloak
           - VMelnalksnis.Testcontainers.Paperless
     
     runs-on: ubuntu-latest

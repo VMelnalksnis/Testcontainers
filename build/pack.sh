@@ -3,7 +3,7 @@ set -e
 
 ./build/restore.sh
 
-version=$(cat version)
+version=$(cat ./source/"$1"/version)
 publish_dir="./source/$1/bin/Release"
 full_version="$version.$2"
 package_name="$1.$version.nupkg"
@@ -20,8 +20,8 @@ dotnet pack \
 	/nologo \
 	/clp:NoSummary
 
-echo "artifact-name=$package_name" >> "$GITHUB_OUTPUT"
-echo "artifact=$publish_dir/$package_name" >> "$GITHUB_OUTPUT"
+echo "artifact-name=$package_name" >>"$GITHUB_OUTPUT"
+echo "artifact=$publish_dir/$package_name" >>"$GITHUB_OUTPUT"
 
-echo "symbols-name=$symbols_name" >> "$GITHUB_OUTPUT"
-echo "symbols=$publish_dir/$symbols_name" >> "$GITHUB_OUTPUT"
+echo "symbols-name=$symbols_name" >>"$GITHUB_OUTPUT"
+echo "symbols=$publish_dir/$symbols_name" >>"$GITHUB_OUTPUT"
