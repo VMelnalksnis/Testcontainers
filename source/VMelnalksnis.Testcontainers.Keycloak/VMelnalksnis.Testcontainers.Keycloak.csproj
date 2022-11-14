@@ -19,4 +19,9 @@
 		<PackageReference Include="Testcontainers" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<!--Transitive dependency added directly to avoid using vulnerable versions-->
+		<PackageReference Include="System.Text.Encodings.Web" />
+	</ItemGroup>
+
 </Project>
