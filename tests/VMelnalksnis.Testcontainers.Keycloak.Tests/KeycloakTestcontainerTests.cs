@@ -2,7 +2,6 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,22 +32,10 @@ public sealed class KeycloakTestcontainerTests : IAsyncLifetime
 	[Fact]
 	public async Task ShouldCreateRealm()
 	{
-		var keycloakConfiguration = new KeycloakTestcontainerConfiguration
-		{
-			Realms = new RealmConfiguration[]
-			{
-				new(
-					"demorealm",
-					new List<Client>
-					{
-						new("demoapp", new("http://localhost:8000/*")) { Secret = Guid.NewGuid().ToString() },
-					},
-					new List<User>
-					{
-						new("john.doe", Guid.NewGuid().ToString()),
-					}),
-			},
-		};
+		var client = new Client("demoapp", new("http://localhost:8000/*")) { Secret = "client_secret" };
+		var user = new User("john.doe", "password123");
+		var realmConfiguration = new RealmConfiguration("demorealm", new List<Client> { client }, new List<User> { user });
+		var keycloakConfiguration = new KeycloakTestcontainerConfiguration { Realms = new[] { realmConfiguration } };
 
 		var keycloak = new TestcontainersBuilder<KeycloakTestcontainer>()
 			.WithKeycloak(keycloakConfiguration)

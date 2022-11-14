@@ -30,9 +30,8 @@ public sealed class PaperlessTestcontainerTests : IAsyncLifetime
 	[Fact]
 	public async Task LoginPageShouldWork()
 	{
-		var paperlessConfiguration = new PaperlessTestcontainerConfiguration();
 		await using var paperless = new TestcontainersBuilder<PaperlessTestcontainer>()
-			.WithPaperless(paperlessConfiguration, _redis)
+			.WithPaperless(new(), _redis)
 			.Build();
 
 		await paperless.StartAsync();

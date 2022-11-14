@@ -5,6 +5,7 @@
 		<ProductId>VMelnalksnis.Testcontainers.Paperless</ProductId>
 		<Description>Testcontainers container for Paperless</Description>
 		<PackageTags>testcontainers paperless</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 
 		<IsPackable>true</IsPackable>
 		<IncludeSymbols>true</IncludeSymbols>

@@ -5,6 +5,7 @@
 		<ProductId>VMelnalksnis.Testcontainers.Keycloak</ProductId>
 		<Description>Testcontainers container for Keycloak</Description>
 		<PackageTags>testcontainers keycloak</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 
 		<IsPackable>true</IsPackable>
 		<IncludeSymbols>true</IncludeSymbols>
