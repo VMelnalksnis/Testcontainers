@@ -10,7 +10,7 @@
 		<NoWarn>NETSDK1138</NoWarn>
 
 		<CoverletOutputFormat>opencover</CoverletOutputFormat>
-		<CoverletOutput>$(MSBuildThisFileDirectory)TestResults/$(AssemblyName)/$(TargetFramework)/</CoverletOutput>
+		<CoverletOutput>$(MSBuildThisFileDirectory)TestResults/$(MSBuildProjectName)/$(TargetFramework)/</CoverletOutput>
 	</PropertyGroup>
 
 	<ItemGroup>

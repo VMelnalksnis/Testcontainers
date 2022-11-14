@@ -1,16 +1,24 @@
 #!/bin/bash
 set -e
 
+# Expected format - v1.0.0:Paperless
+IFS=":" read -r tag project <<<"$1"
+
+if [[ $project == "Paperless" ]] || [[ $project == "Keycloak" ]]; then
+	project_name="VMelnalksnis.Testcontainers.$project"
+else
+	echo "Unrecognized project: '$project'"
+	exit 1
+fi
+
+version=$(echo "$tag" | tr -d v)
+publish_dir="./source/$project_name/bin/Release"
+full_version="$version.$2"
+
 ./build/restore.sh
 
-version=$(cat ./source/"$1"/version)
-publish_dir="./source/$1/bin/Release"
-full_version="$version.$2"
-package_name="$1.$version.nupkg"
-symbols_name="$1.$version.snupkg"
-
 dotnet pack \
-	./source/"$1"/"$1".csproj \
+	./source/"$project_name"/"$project_name".csproj \
 	--configuration Release \
 	-p:AssemblyVersion="$full_version" \
 	-p:AssemblyFileVersion="$full_version" \
@@ -20,8 +28,4 @@ dotnet pack \
 	/nologo \
 	/clp:NoSummary
 
-echo "artifact-name=$package_name" >>"$GITHUB_OUTPUT"
-echo "artifact=$publish_dir/$package_name" >>"$GITHUB_OUTPUT"
-
-echo "symbols-name=$symbols_name" >>"$GITHUB_OUTPUT"
-echo "symbols=$publish_dir/$symbols_name" >>"$GITHUB_OUTPUT"
+echo "publish-directory=$publish_dir" >>"$GITHUB_OUTPUT"
