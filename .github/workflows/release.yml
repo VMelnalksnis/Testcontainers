@@ -22,10 +22,6 @@ jobs:
         run: dotnet nuget push "**/*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
         working-directory: ${{ steps.publish.outputs.publish-directory }}
 
-      - name: NuGet Push Symbols
-        run: dotnet nuget push "**/*.snupkg" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
-        working-directory: ${{ steps.publish.outputs.publish-directory }}
-
       - name: Create release
         uses: softprops/action-gh-release@v0.1.14
         with:
