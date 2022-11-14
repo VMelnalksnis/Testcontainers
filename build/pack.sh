@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# Expected format - v1.0.0:Paperless
-IFS=":" read -r tag project <<<"$1"
+# Expected format - v1.0.0/Paperless
+IFS="/" read -r tag project <<<"$1"
 
 if [[ $project == "Paperless" ]] || [[ $project == "Keycloak" ]]; then
 	project_name="VMelnalksnis.Testcontainers.$project"
