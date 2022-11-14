@@ -24,4 +24,8 @@
 		<PackageReference Include="System.Net.Http.Json" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
 </Project>
