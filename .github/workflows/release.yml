@@ -2,7 +2,7 @@ name: Release Paperless
 
 on:
   push:
-    tags: [ v*.*.* ]
+    tags: [ v*.*.** ]
 
 env:
   DOTNET_NOLOGO: true
