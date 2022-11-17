@@ -32,7 +32,12 @@ public sealed class KeycloakTestcontainerTests : IAsyncLifetime
 	[Fact]
 	public async Task ShouldCreateRealm()
 	{
-		var client = new Client("demoapp", new("http://localhost:8000/*")) { Secret = "client_secret" };
+		var mapper = new ClientProtocolMapper("audience-mapping", "openid-connect", "oidc-audience-mapper");
+		var client = new Client("demoapp", new("http://localhost:8000/*"))
+		{
+			Secret = "client_secret",
+			Mappers = new[] { mapper },
+		};
 		var user = new User("john.doe", "password123");
 		var realmConfiguration = new RealmConfiguration("demorealm", new List<Client> { client }, new List<User> { user });
 		var keycloakConfiguration = new KeycloakTestcontainerConfiguration { Realms = new[] { realmConfiguration } };

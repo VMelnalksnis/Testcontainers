@@ -3,6 +3,7 @@
 // See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
@@ -13,4 +14,7 @@ public sealed record Client(string Name, Uri RedirectUri)
 {
 	/// <summary>Gets the client secret.</summary>
 	public string? Secret { get; init; }
+
+	/// <summary>Gets the protocol mappers for this client.</summary>
+	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = Array.Empty<ClientProtocolMapper>();
 }

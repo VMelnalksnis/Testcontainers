@@ -72,6 +72,14 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		{
 			result = await CreateClient(realmConfiguration, client).ConfigureAwait(false);
 			HandleResult(result, log);
+
+			var id = result.Stderr.Split('\'').Select(s => s.Trim()).Last(s => !string.IsNullOrWhiteSpace(s));
+
+			foreach (var mapper in client.Mappers)
+			{
+				result = await CreateMapper(realmConfiguration, client, id, mapper).ConfigureAwait(false);
+				HandleResult(result, log);
+			}
 		}
 
 		foreach (var user in realmConfiguration.Users)
@@ -122,6 +130,23 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 
 		return ExecAsync(command);
 	}
+
+	private Task<ExecResult> CreateMapper(
+		RealmConfiguration realmConfiguration,
+		Client client,
+		string clientId,
+		ClientProtocolMapper mapper) => ExecAsync(new List<string>
+	{
+		_adminCommand, "create", $"clients/{clientId}/protocol-mappers/models",
+		"-r", realmConfiguration.Name,
+		"-s", $"name={mapper.Name}",
+		"-s", $"protocol={mapper.Protocol}",
+		"-s", $"protocolMapper={mapper.ProtocolMapper}",
+		"-s", $"consentRequired={mapper.ConsentRequired}",
+		"-s", $"config.\"included.client.audience\"={client.Name}'",
+		"-s", $"config.\"id.token.claim\"={mapper.AddToIdToken}",
+		"-s", $"config.\"access.token.claim\"={mapper.AddToAccessToken}",
+	});
 
 	private Task<ExecResult> CreateUser(RealmConfiguration realmConfiguration, User user) => ExecAsync(new List<string>
 	{
