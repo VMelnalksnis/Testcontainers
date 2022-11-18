@@ -143,7 +143,7 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		"-s", $"protocol={mapper.Protocol}",
 		"-s", $"protocolMapper={mapper.ProtocolMapper}",
 		"-s", $"consentRequired={mapper.ConsentRequired}",
-		"-s", $"config.\"included.client.audience\"={client.Name}'",
+		"-s", $"config.\"included.client.audience\"={client.Name}",
 		"-s", $"config.\"id.token.claim\"={mapper.AddToIdToken}",
 		"-s", $"config.\"access.token.claim\"={mapper.AddToAccessToken}",
 	});
