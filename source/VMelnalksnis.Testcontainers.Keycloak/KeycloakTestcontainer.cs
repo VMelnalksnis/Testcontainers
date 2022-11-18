@@ -24,12 +24,15 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 {
 	private const string _adminCommand = "/opt/keycloak/bin/kcadm.sh";
 
+	private readonly ILogger _logger;
+
 	private Realm[] _realms = Array.Empty<Realm>();
 
 	[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 	private KeycloakTestcontainer(ITestcontainersConfiguration configuration, ILogger logger)
 		: base(configuration, logger)
 	{
+		_logger = logger;
 		RealmConfigurations = Array.Empty<RealmConfiguration>();
 	}
 
@@ -50,45 +53,48 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		_realms = RealmConfigurations.Select(realm => new Realm(realm, GetMappedPublicPort(ContainerPort))).ToArray();
 	}
 
-	private static void HandleResult(ExecResult result, Action<string>? log)
+	private void HandleResult(ExecResult result)
 	{
-		log?.Invoke($"Stdout: {result.Stdout}");
-		log?.Invoke($"Stderr: {result.Stderr}");
+		_logger.LogInformation("Stdout {Stdout}", result.Stdout);
+		_logger.LogInformation("Stderr {Stderr}", result.Stderr);
 		if (result.ExitCode is not 0)
 		{
 			throw new ApplicationException(result.Stderr);
 		}
 	}
 
-	private async Task ConfigureRealm(RealmConfiguration realmConfiguration, Action<string>? log = null)
+	private async Task ConfigureRealm(RealmConfiguration realmConfiguration)
 	{
 		var result = await LogIn().ConfigureAwait(false);
-		HandleResult(result, log);
+		HandleResult(result);
 
 		result = await CreateRealm(realmConfiguration).ConfigureAwait(false);
-		HandleResult(result, log);
+		HandleResult(result);
 
 		foreach (var client in realmConfiguration.Clients)
 		{
 			result = await CreateClient(realmConfiguration, client).ConfigureAwait(false);
-			HandleResult(result, log);
+			HandleResult(result);
 
 			var id = result.Stderr.Split('\'').Select(s => s.Trim()).Last(s => !string.IsNullOrWhiteSpace(s));
 
 			foreach (var mapper in client.Mappers)
 			{
 				result = await CreateMapper(realmConfiguration, client, id, mapper).ConfigureAwait(false);
-				HandleResult(result, log);
+				HandleResult(result);
+
+				result = await GetClient(realmConfiguration, id).ConfigureAwait(false);
+				HandleResult(result);
 			}
 		}
 
 		foreach (var user in realmConfiguration.Users)
 		{
 			result = await CreateUser(realmConfiguration, user).ConfigureAwait(false);
-			HandleResult(result, log);
+			HandleResult(result);
 
 			result = await SetUserPassword(realmConfiguration, user).ConfigureAwait(false);
-			HandleResult(result, log);
+			HandleResult(result);
 		}
 	}
 
@@ -143,9 +149,15 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		"-s", $"protocol={mapper.Protocol}",
 		"-s", $"protocolMapper={mapper.ProtocolMapper}",
 		"-s", $"consentRequired={mapper.ConsentRequired}",
-		"-s", $"config.\"included.client.audience\"={client.Name}",
-		"-s", $"config.\"id.token.claim\"={mapper.AddToIdToken}",
-		"-s", $"config.\"access.token.claim\"={mapper.AddToAccessToken}",
+		"-s", $"config.\"included.client.audience\"=\"{client.Name}\"",
+		"-s", $"config.\"id.token.claim\"=\"{mapper.AddToIdToken}\"",
+		"-s", $"config.\"access.token.claim\"=\"{mapper.AddToAccessToken}\"",
+	});
+
+	private Task<ExecResult> GetClient(RealmConfiguration realmConfiguration, string clientId) => ExecAsync(new List<string>
+	{
+		_adminCommand, "get", $"clients/{clientId}/",
+		"-r", realmConfiguration.Name,
 	});
 
 	private Task<ExecResult> CreateUser(RealmConfiguration realmConfiguration, User user) => ExecAsync(new List<string>

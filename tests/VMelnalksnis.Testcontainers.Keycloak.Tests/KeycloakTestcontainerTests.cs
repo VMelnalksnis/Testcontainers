@@ -9,6 +9,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
@@ -25,6 +29,9 @@ public sealed class KeycloakTestcontainerTests : IAsyncLifetime
 	public KeycloakTestcontainerTests(ITestOutputHelper testOutput)
 	{
 		_testOutput = testOutput;
+		var services = new ServiceCollection().AddLogging(builder => builder.AddXUnit(_testOutput));
+		var provider = services.BuildServiceProvider();
+		TestcontainersSettings.Logger = provider.GetRequiredService<ILogger<KeycloakTestcontainer>>();
 	}
 
 	public Task InitializeAsync() => Task.CompletedTask;
