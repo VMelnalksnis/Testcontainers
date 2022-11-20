@@ -25,8 +25,21 @@ public sealed class KeycloakFixture : IAsyncLifetime
 			Secret = Guid.NewGuid().ToString(),
 			ServiceAccountsEnabled = true,
 			Mappers = new[] { mapper },
+			ServiceAccountUser = new()
+			{
+				Email = "service-account@example.com",
+				FirstName = "Service",
+				LastName = "Account",
+				EmailVerified = true,
+			},
 		};
-		var user = new User("john.doe", "password123");
+		var user = new User("john.doe", "password123")
+		{
+			Email = "john.doe@example.com",
+			EmailVerified = true,
+			FirstName = "John",
+			LastName = "Doe",
+		};
 		var realmConfiguration = new RealmConfiguration("demorealm", new List<Client> { Client }, new List<User> { user });
 		var keycloakConfiguration = new KeycloakTestcontainerConfiguration { Realms = new[] { realmConfiguration } };
 

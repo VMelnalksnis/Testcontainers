@@ -59,7 +59,6 @@ public sealed class KeycloakTestcontainerTests
 		if (!response.IsSuccessStatusCode)
 		{
 #if NET5_0_OR_GREATER
-
 			throw new HttpRequestException(content, null, response.StatusCode);
 #else
 			throw new HttpRequestException(content);
@@ -74,6 +73,16 @@ public sealed class KeycloakTestcontainerTests
 		{
 			token.Issuer.Should().Be(realmUri.ToString());
 			token.Audiences.Should().Contain(_client.Name);
+
+			token.Claims.Should()
+				.ContainSingle(claim => claim.Type == "email")
+				.Which.Value.Should()
+				.Be(_client.ServiceAccountUser?.Email);
+
+			token.Claims.Should()
+				.ContainSingle(claim => claim.Type == "name")
+				.Which.Value.Should()
+				.Be($"{_client.ServiceAccountUser?.FirstName} {_client.ServiceAccountUser?.LastName}");
 		}
 	}
 }

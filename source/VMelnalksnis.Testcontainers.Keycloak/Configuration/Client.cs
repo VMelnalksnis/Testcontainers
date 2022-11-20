@@ -16,7 +16,11 @@ public sealed record Client(string Name, Uri RedirectUri)
 	public string? Secret { get; init; }
 
 	/// <summary>Gets a value indicating whether service accounts are enabled for this client.</summary>
+	/// <remarks>If this is set to <c>true</c>, then <see cref="Secret"/> must also be set.</remarks>
 	public bool? ServiceAccountsEnabled { get; init; }
+
+	/// <summary>Gets the user that is used when authenticating using client credentials.</summary>
+	public ServiceAccount? ServiceAccountUser { get; init; }
 
 	/// <summary>Gets the protocol mappers for this client.</summary>
 	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = Array.Empty<ClientProtocolMapper>();

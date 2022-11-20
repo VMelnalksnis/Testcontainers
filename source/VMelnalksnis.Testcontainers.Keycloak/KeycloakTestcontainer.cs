@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -83,6 +84,17 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 				result = await CreateMapper(realmConfiguration, client, id, mapper).ConfigureAwait(false);
 				HandleResult(result);
 
+				if (client.ServiceAccountsEnabled is true && client.ServiceAccountUser is { } serviceUser)
+				{
+					result = await GetServiceAccountUser(realmConfiguration, id).ConfigureAwait(false);
+					HandleResult(result);
+
+					var serviceUserId = JsonNode.Parse(result.Stdout)?["id"]?.GetValue<string>() ??
+						throw new InvalidOperationException("Failed to get service account user id");
+					result = await UpdateUser(realmConfiguration, serviceUser, serviceUserId).ConfigureAwait(false);
+					HandleResult(result);
+				}
+
 				result = await GetClient(realmConfiguration, id).ConfigureAwait(false);
 				HandleResult(result);
 			}
@@ -138,7 +150,10 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 
 		if (client.ServiceAccountsEnabled is { } serviceAccount)
 		{
-			command.AddRange(new[] { "-s", $"serviceAccountsEnabled=\"{serviceAccount.ToString().ToLowerInvariant()}\"" });
+			command.AddRange(new[]
+			{
+				"-s", $"serviceAccountsEnabled=\"{serviceAccount.ToString().ToLowerInvariant()}\"",
+			});
 		}
 
 		return ExecAsync(command);
@@ -161,19 +176,83 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		"-s", $"config.\"access.token.claim\"=\"{mapper.AddToAccessToken.ToString().ToLowerInvariant()}\"",
 	});
 
-	private Task<ExecResult> GetClient(RealmConfiguration realmConfiguration, string clientId) => ExecAsync(new List<string>
-	{
-		_adminCommand, "get", $"clients/{clientId}/",
-		"-r", realmConfiguration.Name,
-	});
+	private Task<ExecResult> GetServiceAccountUser(RealmConfiguration realmConfiguration, string clientId) => ExecAsync(
+		new List<string>
+		{
+			_adminCommand, "get", $"clients/{clientId}/service-account-user",
+			"-r", realmConfiguration.Name,
+		});
 
-	private Task<ExecResult> CreateUser(RealmConfiguration realmConfiguration, User user) => ExecAsync(new List<string>
+	private Task<ExecResult> GetClient(RealmConfiguration realmConfiguration, string clientId) => ExecAsync(
+		new List<string>
+		{
+			_adminCommand, "get", $"clients/{clientId}/",
+			"-r", realmConfiguration.Name,
+		});
+
+	private Task<ExecResult> CreateUser(RealmConfiguration realmConfiguration, User user)
 	{
-		_adminCommand, "create", "users",
-		"-r", realmConfiguration.Name,
-		"-s", $"username={user.Username}",
-		"-s", "enabled=true",
-	});
+		var command = new List<string>
+		{
+			_adminCommand, "create", "users",
+			"-r", realmConfiguration.Name,
+			"-s", $"username={user.Username}",
+			"-s", "enabled=true",
+		};
+
+		if (user.Email is { } email)
+		{
+			command.AddRange(new[] { "-s", $"email={email}" });
+		}
+
+		if (user.EmailVerified is { } emailVerified)
+		{
+			command.AddRange(new[] { "-s", $"emailVerified={emailVerified.ToString().ToLowerInvariant()}" });
+		}
+
+		if (user.FirstName is { } firstName)
+		{
+			command.AddRange(new[] { "-s", $"firstName={firstName}" });
+		}
+
+		if (user.LastName is { } lastName)
+		{
+			command.AddRange(new[] { "-s", $"lastName={lastName}" });
+		}
+
+		return ExecAsync(command);
+	}
+
+	private Task<ExecResult> UpdateUser(RealmConfiguration realmConfiguration, User user, string id)
+	{
+		var command = new List<string>
+		{
+			_adminCommand, "update", $"users/{id}",
+			"-r", realmConfiguration.Name,
+		};
+
+		if (user.Email is { } email)
+		{
+			command.AddRange(new[] { "-s", $"email={email}" });
+		}
+
+		if (user.EmailVerified is { } emailVerified)
+		{
+			command.AddRange(new[] { "-s", $"emailVerified={emailVerified.ToString().ToLowerInvariant()}" });
+		}
+
+		if (user.FirstName is { } firstName)
+		{
+			command.AddRange(new[] { "-s", $"firstName={firstName}" });
+		}
+
+		if (user.LastName is { } lastName)
+		{
+			command.AddRange(new[] { "-s", $"lastName={lastName}" });
+		}
+
+		return ExecAsync(command);
+	}
 
 	private Task<ExecResult> SetUserPassword(RealmConfiguration realmConfiguration, User user) => ExecAsync(
 		new List<string>
