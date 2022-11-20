@@ -15,6 +15,9 @@ public sealed record Client(string Name, Uri RedirectUri)
 	/// <summary>Gets the client secret.</summary>
 	public string? Secret { get; init; }
 
+	/// <summary>Gets a value indicating whether service accounts are enabled for this client.</summary>
+	public bool? ServiceAccountsEnabled { get; init; }
+
 	/// <summary>Gets the protocol mappers for this client.</summary>
 	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = Array.Empty<ClientProtocolMapper>();
 }

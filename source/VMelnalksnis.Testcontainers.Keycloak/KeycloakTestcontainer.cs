@@ -123,15 +123,22 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 			"-r", realmConfiguration.Name,
 			"-s", $"clientId={client.Name}",
 			"-s", $"redirectUris=[\"{client.RedirectUri}\"]",
+			"-s", "protocol=openid-connect",
 		};
 
 		if (client.Secret is { } clientSecret)
 		{
 			command.AddRange(new[]
 			{
+				"-s", "publicClient=false",
 				"-s", "clientAuthenticatorType=client-secret",
 				"-s", $"secret={clientSecret}",
 			});
+		}
+
+		if (client.ServiceAccountsEnabled is { } serviceAccount)
+		{
+			command.AddRange(new[] { "-s", $"serviceAccountsEnabled=\"{serviceAccount.ToString().ToLowerInvariant()}\"" });
 		}
 
 		return ExecAsync(command);
@@ -150,8 +157,8 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		"-s", $"protocolMapper={mapper.ProtocolMapper}",
 		"-s", $"consentRequired={mapper.ConsentRequired}",
 		"-s", $"config.\"included.client.audience\"=\"{client.Name}\"",
-		"-s", $"config.\"id.token.claim\"=\"{mapper.AddToIdToken}\"",
-		"-s", $"config.\"access.token.claim\"=\"{mapper.AddToAccessToken}\"",
+		"-s", $"config.\"id.token.claim\"=\"{mapper.AddToIdToken.ToString().ToLowerInvariant()}\"",
+		"-s", $"config.\"access.token.claim\"=\"{mapper.AddToAccessToken.ToString().ToLowerInvariant()}\"",
 	});
 
 	private Task<ExecResult> GetClient(RealmConfiguration realmConfiguration, string clientId) => ExecAsync(new List<string>
