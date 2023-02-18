@@ -1,4 +1,6 @@
-﻿# Testcontainers module for Paperless 
+﻿[![Nuget](https://img.shields.io/nuget/v/VMelnalksnis.Testcontainers.Paperless?label=VMelnalksnis.Testcontainers.Paperless)](https://www.nuget.org/packages/VMelnalksnis.Testcontainers.Paperless/)
+
+# Testcontainers module for Paperless 
 A pre-configured [testcontainers](https://github.com/testcontainers/testcontainers-dotnet) container for [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx).
 
 ## Usage

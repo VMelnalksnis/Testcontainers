@@ -1,4 +1,6 @@
-﻿# Testcontainers module for Keycloak 
+﻿[![Nuget](https://img.shields.io/nuget/v/VMelnalksnis.Testcontainers.Keycloak?label=VMelnalksnis.Testcontainers.Keycloak)](https://www.nuget.org/packages/VMelnalksnis.Testcontainers.Keycloak/)
+
+# Testcontainers module for Keycloak 
 A pre-configured [testcontainers](https://github.com/testcontainers/testcontainers-dotnet) container for [Keycloak](https://github.com/keycloak/keycloak).
 
 ## Usage
