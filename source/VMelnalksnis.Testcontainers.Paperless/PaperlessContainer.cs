@@ -10,27 +10,29 @@ using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
-
-using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
 
 namespace VMelnalksnis.Testcontainers.Paperless;
 
-/// <summary>An extended configured <see cref="HostedServiceContainer"/> for paperless.</summary>
-public sealed class PaperlessTestcontainer : HostedServiceContainer
+/// <inheritdoc />
+public sealed class PaperlessContainer : DockerContainer
 {
-	[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-	private PaperlessTestcontainer(ITestcontainersConfiguration configuration, ILogger logger)
+	private readonly PaperlessConfiguration _configuration;
+
+	/// <summary>Initializes a new instance of the <see cref="PaperlessContainer"/> class.</summary>
+	/// <param name="configuration">The container configuration.</param>
+	/// <param name="logger">The logger.</param>
+	public PaperlessContainer(PaperlessConfiguration configuration, ILogger logger)
 		: base(configuration, logger)
 	{
+		_configuration = configuration;
 	}
 
 	/// <summary>Gets the base address of the paperless instance.</summary>
 	/// <returns>The base address of the paperless instance.</returns>
-	public Uri GetBaseAddress() => new($"http://localhost:{GetMappedPublicPort(ContainerPort)}/");
+	public Uri GetBaseAddress() => new($"http://localhost:{GetMappedPublicPort(PaperlessBuilder.PaperlessPort)}/");
 
 	/// <summary>Creates a new API token for the default admin user.</summary>
 	/// <returns>A new API token for the default admin user.</returns>
@@ -43,8 +45,8 @@ public sealed class PaperlessTestcontainer : HostedServiceContainer
 
 		var loginContent = new FormUrlEncodedContent(new List<KeyValuePair<string?, string?>>
 		{
-			new("username", Username),
-			new("password", Password),
+			new("username", _configuration.Username),
+			new("password", _configuration.Password),
 		});
 
 		var response = await httpClient.PostAsync("/api/token/", loginContent).ConfigureAwait(false);

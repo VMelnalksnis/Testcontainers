@@ -7,38 +7,24 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
-
 namespace VMelnalksnis.Testcontainers.Paperless.Tests;
 
-public sealed class PaperlessTestcontainerTests : IAsyncLifetime
+[Collection("Paperless")]
+public sealed class PaperlessTestcontainerTests
 {
-	private readonly RedisTestcontainer _redis;
+	private readonly PaperlessContainer _paperless;
 
-	public PaperlessTestcontainerTests()
+	public PaperlessTestcontainerTests(PaperlessFixture paperlessFixture)
 	{
-		var redisConfiguration = new RedisTestcontainerConfiguration("docker.io/library/redis:7.0.5");
-		_redis = new TestcontainersBuilder<RedisTestcontainer>()
-			.WithDatabase(redisConfiguration)
-			.Build();
+		_paperless = paperlessFixture.Paperless;
 	}
-
-	public Task InitializeAsync() => _redis.StartAsync();
 
 	[Fact]
 	public async Task LoginPageShouldWork()
 	{
-		await using var paperless = new TestcontainersBuilder<PaperlessTestcontainer>()
-			.WithPaperless(new(), _redis)
-			.Build();
-
-		await paperless.StartAsync();
-
-		var token = await paperless.GetAdminToken();
+		var token = await _paperless.GetAdminToken();
 		using var httpClient = new HttpClient();
-		httpClient.BaseAddress = paperless.GetBaseAddress();
+		httpClient.BaseAddress = _paperless.GetBaseAddress();
 		httpClient.DefaultRequestHeaders.Authorization = new("Token", token);
 		var response = await httpClient.GetAsync("/accounts/login/?next=/");
 
@@ -49,6 +35,4 @@ public sealed class PaperlessTestcontainerTests : IAsyncLifetime
 			response.Content.Headers.ContentType?.CharSet.Should().Be("utf-8");
 		}
 	}
-
-	public Task DisposeAsync() => _redis.DisposeAsync().AsTask();
 }

@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\..\source\VMelnalksnis.Testcontainers.Paperless\VMelnalksnis.Testcontainers.Paperless.csproj" />
-    </ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Testcontainers.Redis" />
+	</ItemGroup>
 
 </Project>
