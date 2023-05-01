@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json.Nodes;
@@ -20,7 +19,7 @@ namespace VMelnalksnis.Testcontainers.Keycloak.Tests;
 public sealed class KeycloakTestcontainerTests
 {
 	private readonly ITestOutputHelper _testOutput;
-	private readonly KeycloakTestcontainer _keycloak;
+	private readonly KeycloakContainer _keycloak;
 	private readonly Client _client;
 
 	public KeycloakTestcontainerTests(KeycloakFixture fixture, ITestOutputHelper testOutput)
@@ -34,7 +33,7 @@ public sealed class KeycloakTestcontainerTests
 	[Fact]
 	public async Task RealmShouldExist()
 	{
-		var response = await new HttpClient().GetAsync(_keycloak.Realms.Single().Metadata);
+		var response = await new HttpClient().GetAsync(_keycloak.Realm.Metadata);
 		response.StatusCode.Should().Be(HttpStatusCode.OK);
 
 		var content = await response.Content.ReadAsStringAsync();
@@ -44,7 +43,7 @@ public sealed class KeycloakTestcontainerTests
 	[Fact]
 	public async Task ShouldAddExpectedAudience()
 	{
-		var realmUri = _keycloak.Realms.Single().ServerRealm;
+		var realmUri = _keycloak.Realm.ServerRealm;
 		using var httpClient = new HttpClient();
 		var requestContent = new FormUrlEncodedContent(new KeyValuePair<string?, string?>[]
 		{

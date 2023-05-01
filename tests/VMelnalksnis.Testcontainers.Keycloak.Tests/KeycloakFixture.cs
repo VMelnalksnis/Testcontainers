@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using DotNet.Testcontainers.Builders;
-
 using JetBrains.Annotations;
 
 using VMelnalksnis.Testcontainers.Keycloak.Configuration;
@@ -40,15 +38,17 @@ public sealed class KeycloakFixture : IAsyncLifetime
 			FirstName = "John",
 			LastName = "Doe",
 		};
-		var realmConfiguration = new RealmConfiguration("demorealm", new List<Client> { Client }, new List<User> { user });
-		var keycloakConfiguration = new KeycloakTestcontainerConfiguration { Realms = new[] { realmConfiguration } };
+		var realmConfiguration = new RealmConfiguration(
+			"demorealm",
+			new List<Client> { Client },
+			new List<User> { user });
 
-		Keycloak = new TestcontainersBuilder<KeycloakTestcontainer>()
-			.WithKeycloak(keycloakConfiguration)
+		Keycloak = new KeycloakBuilder()
+			.WithRealm(realmConfiguration)
 			.Build();
 	}
 
-	internal KeycloakTestcontainer Keycloak { get; }
+	internal KeycloakContainer Keycloak { get; }
 
 	internal Client Client { get; }
 

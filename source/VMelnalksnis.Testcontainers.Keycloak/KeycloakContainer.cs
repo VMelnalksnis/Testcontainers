@@ -9,10 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
-
-using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
 
@@ -20,44 +17,38 @@ using VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
 namespace VMelnalksnis.Testcontainers.Keycloak;
 
-/// <summary>An extended configured <see cref="HostedServiceContainer"/> for keycloak.</summary>
-public sealed class KeycloakTestcontainer : HostedServiceContainer
+/// <inheritdoc />
+public sealed class KeycloakContainer : DockerContainer
 {
 	private const string _adminCommand = "/opt/keycloak/bin/kcadm.sh";
+	private readonly KeycloakConfiguration _configuration;
 
-	private readonly ILogger _logger;
-
-	private Realm[] _realms = Array.Empty<Realm>();
-
-	[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-	private KeycloakTestcontainer(ITestcontainersConfiguration configuration, ILogger logger)
+	/// <summary>Initializes a new instance of the <see cref="KeycloakContainer"/> class.</summary>
+	/// <param name="configuration">The container configuration.</param>
+	/// <param name="logger">The logger.</param>
+	public KeycloakContainer(KeycloakConfiguration configuration, ILogger logger)
 		: base(configuration, logger)
 	{
-		_logger = logger;
-		RealmConfigurations = Array.Empty<RealmConfiguration>();
+		_configuration = configuration;
 	}
 
-	/// <summary>Gets the realms configured in this keycloak instance.</summary>
-	public IEnumerable<Realm> Realms => _realms;
-
-	internal IEnumerable<RealmConfiguration> RealmConfigurations { get; set; }
+	/// <summary>Gets the configured Keycloak realm.</summary>
+	public Realm Realm { get; private set; } = null!;
 
 	/// <inheritdoc />
 	public override async Task StartAsync(CancellationToken ct = default)
 	{
 		await base.StartAsync(ct).ConfigureAwait(false);
-		foreach (var realm in RealmConfigurations)
-		{
-			await ConfigureRealm(realm).ConfigureAwait(false);
-		}
 
-		_realms = RealmConfigurations.Select(realm => new Realm(realm, GetMappedPublicPort(ContainerPort))).ToArray();
+		await ConfigureRealm(_configuration.Realm).ConfigureAwait(false);
+
+		Realm = new(_configuration.Realm, GetMappedPublicPort(KeycloakBuilder.KeycloakPort));
 	}
 
 	private void HandleResult(ExecResult result)
 	{
-		_logger.LogInformation("Stdout {Stdout}", result.Stdout);
-		_logger.LogInformation("Stderr {Stderr}", result.Stderr);
+		Logger.LogInformation("Stdout {Stdout}", result.Stdout);
+		Logger.LogInformation("Stderr {Stderr}", result.Stderr);
 		if (result.ExitCode is not 0)
 		{
 			throw new ApplicationException(result.Stderr);
@@ -115,8 +106,8 @@ public sealed class KeycloakTestcontainer : HostedServiceContainer
 		_adminCommand, "config", "credentials",
 		"--server", "http://localhost:8080/",
 		"--realm", "master",
-		"--user", Username,
-		"--password", Password,
+		"--user", _configuration.Username,
+		"--password", _configuration.Password,
 	});
 
 	private Task<ExecResult> CreateRealm(RealmConfiguration realmConfiguration) => ExecAsync(new List<string>
