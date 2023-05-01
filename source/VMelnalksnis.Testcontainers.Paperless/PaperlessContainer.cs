@@ -53,7 +53,7 @@ public sealed class PaperlessContainer : DockerContainer
 		var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 		if (response.StatusCode is not HttpStatusCode.OK)
 		{
-#if NET7_0_OR_GREATER
+#if NET5_0_OR_GREATER
 			throw new HttpRequestException(content, null, response.StatusCode);
 #else
 			throw new HttpRequestException(content);
