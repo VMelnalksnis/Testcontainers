@@ -9,9 +9,17 @@ namespace VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
 /// <summary>A keycloak client application.</summary>
 /// <param name="Name">The name of the client.</param>
-/// <param name="RedirectUri">The redirect uri of the client.</param>
-public sealed record Client(string Name, Uri RedirectUri)
+public sealed record Client(string Name)
 {
+	/// <summary>Initializes a new instance of the <see cref="Client"/> class.</summary>
+	/// <param name="name">The name of the client.</param>
+	/// <param name="redirectUri">The redirect uri of the client.</param>
+	public Client(string name, Uri redirectUri)
+		: this(name)
+	{
+		RedirectUris = new[] { redirectUri.AbsoluteUri };
+	}
+
 	/// <summary>Gets the client secret.</summary>
 	public string? Secret { get; init; }
 
@@ -24,4 +32,7 @@ public sealed record Client(string Name, Uri RedirectUri)
 
 	/// <summary>Gets the protocol mappers for this client.</summary>
 	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = Array.Empty<ClientProtocolMapper>();
+
+	/// <summary>Gets the redirect uris for this client.</summary>
+	public IEnumerable<string> RedirectUris { get; init; } = Array.Empty<string>();
 }

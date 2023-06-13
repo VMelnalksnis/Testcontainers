@@ -125,7 +125,7 @@ public sealed class KeycloakContainer : DockerContainer
 			_adminCommand, "create", "clients",
 			"-r", realmConfiguration.Name,
 			"-s", $"clientId={client.Name}",
-			"-s", $"redirectUris=[\"{client.RedirectUri}\"]",
+			"-s", $"redirectUris=[{string.Join(",", client.RedirectUris.Select(uri => $"\"{uri}\""))}]",
 			"-s", "protocol=openid-connect",
 		};
 
@@ -162,7 +162,7 @@ public sealed class KeycloakContainer : DockerContainer
 		"-s", $"protocol={mapper.Protocol}",
 		"-s", $"protocolMapper={mapper.ProtocolMapper}",
 		"-s", $"consentRequired={mapper.ConsentRequired}",
-		"-s", $"config.\"included.client.audience\"=\"{client.Name}\"",
+		"-s", $"config.\"included.client.audience\"=\"{mapper.IncludedClientAudience ?? client.Name}\"",
 		"-s", $"config.\"id.token.claim\"=\"{mapper.AddToIdToken.ToString().ToLowerInvariant()}\"",
 		"-s", $"config.\"access.token.claim\"=\"{mapper.AddToAccessToken.ToString().ToLowerInvariant()}\"",
 	});

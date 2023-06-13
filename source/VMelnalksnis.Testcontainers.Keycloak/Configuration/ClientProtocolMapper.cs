@@ -17,4 +17,8 @@ public sealed record ClientProtocolMapper(
 	string ProtocolMapper,
 	bool ConsentRequired = false,
 	bool AddToIdToken = false,
-	bool AddToAccessToken = true);
+	bool AddToAccessToken = true)
+{
+	/// <summary>Gets the included client audience.</summary>
+	public string? IncludedClientAudience { get; init; }
+}

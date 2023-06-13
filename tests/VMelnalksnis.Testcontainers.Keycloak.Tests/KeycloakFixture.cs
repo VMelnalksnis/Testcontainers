@@ -18,11 +18,15 @@ public sealed class KeycloakFixture : IAsyncLifetime
 	public KeycloakFixture()
 	{
 		var mapper = new ClientProtocolMapper("audience-mapping", "openid-connect", "oidc-audience-mapper");
+		var mapperDesktop = new ClientProtocolMapper("audience-mapping-desktop", "openid-connect", "oidc-audience-mapper")
+		{
+			IncludedClientAudience = "demoapp-desktop",
+		};
 		Client = new("demoapp", new("http://localhost:8000/*"))
 		{
 			Secret = Guid.NewGuid().ToString(),
 			ServiceAccountsEnabled = true,
-			Mappers = new[] { mapper },
+			Mappers = new[] { mapper, mapperDesktop },
 			ServiceAccountUser = new()
 			{
 				Email = "service-account@example.com",
