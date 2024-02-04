@@ -8,7 +8,7 @@
 		<PackageVersion Include="Jetbrains.Annotations" Version="2023.3.0"/>
 		<PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.3.0"/>
 		<PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="7.0.0"/>
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
 		<PackageVersion Include="Nullable" Version="1.3.1"/>
