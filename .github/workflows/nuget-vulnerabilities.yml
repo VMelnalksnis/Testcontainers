@@ -24,6 +24,6 @@ jobs:
     name: NuGet vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.3
       - uses: actions/setup-dotnet@v4.0.0
       - run: ./build/nuget_vulnerabilities.sh
