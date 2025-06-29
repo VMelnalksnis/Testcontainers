@@ -60,11 +60,7 @@ public sealed class KeycloakTestcontainerTests
 		var content = await response.Content.ReadAsStringAsync();
 		if (!response.IsSuccessStatusCode)
 		{
-#if NET5_0_OR_GREATER
 			throw new HttpRequestException(content, null, response.StatusCode);
-#else
-			throw new HttpRequestException(content);
-#endif
 		}
 
 		var responseJson = JsonNode.Parse(content);
