@@ -17,15 +17,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Testcontainers" />
+		<PackageReference Include="Testcontainers"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="System.Net.Http.Json" />
+		<PackageReference Include="System.Net.Http.Json"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 </Project>

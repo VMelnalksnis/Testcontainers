@@ -5,6 +5,4 @@
 namespace VMelnalksnis.Testcontainers.Paperless.Tests;
 
 [CollectionDefinition("Paperless")]
-public sealed class PaperlessCollection : ICollectionFixture<PaperlessFixture>
-{
-}
+public sealed class PaperlessCollection : ICollectionFixture<PaperlessFixture>;

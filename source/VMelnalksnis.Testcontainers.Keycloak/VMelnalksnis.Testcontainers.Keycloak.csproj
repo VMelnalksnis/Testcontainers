@@ -17,17 +17,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Testcontainers" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<!--Transitive dependency added directly to avoid using vulnerable versions-->
-		<PackageReference Include="System.Text.Encodings.Web" />
-		<PackageReference Include="System.Text.Json" />
+		<PackageReference Include="Testcontainers.Keycloak"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 </Project>

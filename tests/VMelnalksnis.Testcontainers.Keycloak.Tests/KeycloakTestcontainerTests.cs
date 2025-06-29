@@ -2,12 +2,13 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+
+using Testcontainers.Keycloak;
 
 using VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
@@ -18,12 +19,14 @@ namespace VMelnalksnis.Testcontainers.Keycloak.Tests;
 [Collection("Keycloak")]
 public sealed class KeycloakTestcontainerTests
 {
+	private readonly KeycloakFixture _fixture;
 	private readonly ITestOutputHelper _testOutput;
 	private readonly KeycloakContainer _keycloak;
 	private readonly Client _client;
 
 	public KeycloakTestcontainerTests(KeycloakFixture fixture, ITestOutputHelper testOutput)
 	{
+		_fixture = fixture;
 		_testOutput = testOutput;
 
 		_keycloak = fixture.Keycloak;
@@ -33,7 +36,7 @@ public sealed class KeycloakTestcontainerTests
 	[Fact]
 	public async Task RealmShouldExist()
 	{
-		var response = await new HttpClient().GetAsync(_keycloak.Realm.Metadata);
+		var response = await new HttpClient().GetAsync(_fixture.Configuration.GetRealm(_keycloak).Metadata);
 		response.StatusCode.Should().Be(HttpStatusCode.OK);
 
 		var content = await response.Content.ReadAsStringAsync();
@@ -43,15 +46,15 @@ public sealed class KeycloakTestcontainerTests
 	[Fact]
 	public async Task ShouldAddExpectedAudience()
 	{
-		var realmUri = _keycloak.Realm.ServerRealm;
+		var realmUri = _fixture.Configuration.GetRealm(_keycloak).ServerRealm;
 		using var httpClient = new HttpClient();
-		var requestContent = new FormUrlEncodedContent(new KeyValuePair<string?, string?>[]
-		{
+		var requestContent = new FormUrlEncodedContent(
+		[
 			new("client_id", _client.Name),
 			new("client_secret", _client.Secret),
 			new("scope", "openid profile offline_access"),
-			new("grant_type", "client_credentials"),
-		});
+			new("grant_type", "client_credentials")
+		]);
 
 		var response = await httpClient.PostAsync($"{realmUri}/protocol/openid-connect/token", requestContent);
 		var content = await response.Content.ReadAsStringAsync();

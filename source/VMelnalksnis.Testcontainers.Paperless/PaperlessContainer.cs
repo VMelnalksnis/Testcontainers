@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 using DotNet.Testcontainers.Containers;
 
-using Microsoft.Extensions.Logging;
-
 namespace VMelnalksnis.Testcontainers.Paperless;
 
 /// <inheritdoc />
@@ -23,9 +21,8 @@ public sealed class PaperlessContainer : DockerContainer
 
 	/// <summary>Initializes a new instance of the <see cref="PaperlessContainer"/> class.</summary>
 	/// <param name="configuration">The container configuration.</param>
-	/// <param name="logger">The logger.</param>
-	public PaperlessContainer(PaperlessConfiguration configuration, ILogger logger)
-		: base(configuration, logger)
+	public PaperlessContainer(PaperlessConfiguration configuration)
+		: base(configuration)
 	{
 		_configuration = configuration;
 	}

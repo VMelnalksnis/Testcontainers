@@ -5,6 +5,4 @@
 namespace VMelnalksnis.Testcontainers.Keycloak.Tests;
 
 [CollectionDefinition("Keycloak")]
-public sealed class KeycloakCollection : ICollectionFixture<KeycloakFixture>
-{
-}
+public sealed class KeycloakCollection : ICollectionFixture<KeycloakFixture>;

@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="MartinCostello.Logging.XUnit" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-		<PackageReference Include="Microsoft.Extensions.Logging" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="MartinCostello.Logging.XUnit"/>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+		<PackageReference Include="Microsoft.Extensions.Logging"/>
+		<PackageReference Include="Microsoft.Extensions.Logging.Console"/>
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt"/>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<ProjectReference Include="..\..\source\VMelnalksnis.Testcontainers.Keycloak\VMelnalksnis.Testcontainers.Keycloak.csproj" />
+		<ProjectReference Include="..\..\source\VMelnalksnis.Testcontainers.Keycloak\VMelnalksnis.Testcontainers.Keycloak.csproj"/>
 	</ItemGroup>
-	
+
 </Project>

@@ -76,7 +76,7 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 	public override PaperlessContainer Build()
 	{
 		Validate();
-		return new(DockerResourceConfiguration, TestcontainersSettings.Logger);
+		return new(DockerResourceConfiguration);
 	}
 
 	/// <inheritdoc />

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using JetBrains.Annotations;
 
+using Testcontainers.Keycloak;
+
 using VMelnalksnis.Testcontainers.Keycloak.Configuration;
 
 namespace VMelnalksnis.Testcontainers.Keycloak.Tests;
@@ -18,10 +20,11 @@ public sealed class KeycloakFixture : IAsyncLifetime
 	public KeycloakFixture()
 	{
 		var mapper = new ClientProtocolMapper("audience-mapping", "openid-connect", "oidc-audience-mapper");
-		var mapperDesktop = new ClientProtocolMapper("audience-mapping-desktop", "openid-connect", "oidc-audience-mapper")
-		{
-			IncludedClientAudience = "demoapp-desktop",
-		};
+		var mapperDesktop =
+			new ClientProtocolMapper("audience-mapping-desktop", "openid-connect", "oidc-audience-mapper")
+			{
+				IncludedClientAudience = "demoapp-desktop",
+			};
 		Client = new("demoapp", new("http://localhost:8000/*"))
 		{
 			Secret = Guid.NewGuid().ToString(),
@@ -42,21 +45,22 @@ public sealed class KeycloakFixture : IAsyncLifetime
 			FirstName = "John",
 			LastName = "Doe",
 		};
-		var realmConfiguration = new RealmConfiguration(
-			"demorealm",
-			new List<Client> { Client },
-			new List<User> { user });
+		Configuration = new("demorealm", new List<Client> { Client }, new List<User> { user });
 
-		Keycloak = new KeycloakBuilder()
-			.WithRealm(realmConfiguration)
-			.Build();
+		Keycloak = new KeycloakBuilder().WithUsername("admin").WithPassword("admin").Build();
 	}
 
 	internal KeycloakContainer Keycloak { get; }
 
 	internal Client Client { get; }
 
-	public Task InitializeAsync() => Keycloak.StartAsync();
+	internal RealmConfiguration Configuration { get; }
+
+	public async Task InitializeAsync()
+	{
+		await Keycloak.StartAsync();
+		await Keycloak.ConfigureRealm(Configuration, "admin", "admin");
+	}
 
 	public Task DisposeAsync() => Keycloak.DisposeAsync().AsTask();
 }
