@@ -23,7 +23,7 @@ jobs:
         working-directory: ${{ steps.publish.outputs.publish-directory }}
 
       - name: Create release
-        uses: softprops/action-gh-release@v2.3.2
+        uses: softprops/action-gh-release@v2.3.3
         with:
           draft: true
           prerelease: false
