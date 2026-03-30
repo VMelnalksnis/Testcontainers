@@ -2,11 +2,15 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+
 using Docker.DotNet.Models;
 
 using DotNet.Testcontainers;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
+using DotNet.Testcontainers.Images;
 
 namespace VMelnalksnis.Testcontainers.Paperless;
 
@@ -17,9 +21,11 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 	public const string PaperlessImage = "ghcr.io/paperless-ngx/paperless-ngx";
 
 	/// <summary>The default Paperless image version.</summary>
+	[Obsolete("This constant is obsolete and will be removed in the future. Use the constructor with the image parameter instead: https://github.com/testcontainers/testcontainers-dotnet/discussions/1470#discussioncomment-15185721.")]
 	public const string DefaultVersion = "1.9.2";
 
 	/// <summary>The default Paperless image name with version tag.</summary>
+	[Obsolete("This constant is obsolete and will be removed in the future. Use the constructor with the image parameter instead: https://github.com/testcontainers/testcontainers-dotnet/discussions/1470#discussioncomment-15185721.")]
 	public const string DefaultImage = $"{PaperlessImage}:{DefaultVersion}";
 
 	/// <summary>The port on which Paperless is listening on within the container.</summary>
@@ -31,13 +37,30 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 	/// <summary>The default Paperless admin password.</summary>
 	public const string DefaultPassword = "admin";
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="PaperlessBuilder"/> class.
-	/// </summary>
+	/// <summary>Initializes a new instance of the <see cref="PaperlessBuilder"/> class.</summary>
+	[Obsolete("This parameterless constructor is obsolete and will be removed. Use the constructor with the image parameter instead: https://github.com/testcontainers/testcontainers-dotnet/discussions/1470#discussioncomment-15185721.")]
+	[ExcludeFromCodeCoverage]
 	public PaperlessBuilder()
-		: this(new())
+		: this(DefaultImage)
 	{
 		DockerResourceConfiguration = Init().DockerResourceConfiguration;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="PaperlessBuilder"/> class.</summary>
+	/// <param name="image">The full Docker image name, including the image repository and tag (e.g., <see cref="DefaultImage"/>).</param>
+	/// <remarks>Docker image tags available at <see href="https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx/versions?filters%5Bversion_type%5D=tagged"/>.</remarks>
+	public PaperlessBuilder(string image)
+		: this(new DockerImage(image))
+	{
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="PaperlessBuilder"/> class.</summary>
+	/// <param name="image">An <see cref="IImage"/> instance that specified the Docker image to be used for the container builder configuration.</param>
+	/// <remarks>Docker image tags available at <see href="https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx/versions?filters%5Bversion_type%5D=tagged"/>.</remarks>
+	public PaperlessBuilder(IImage image)
+		: this(new PaperlessConfiguration())
+	{
+		DockerResourceConfiguration = Init().WithImage(image).DockerResourceConfiguration;
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="PaperlessBuilder"/> class.</summary>
@@ -82,11 +105,10 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 	/// <inheritdoc />
 	protected override PaperlessBuilder Init() => base
 		.Init()
-		.WithImage(DefaultImage)
 		.WithPortBinding(PaperlessPort, true)
 		.WithUsername(DefaultUsername)
 		.WithPassword(DefaultPassword)
-		.WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(PaperlessPort));
+		.WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(PaperlessPort));
 
 	/// <inheritdoc />
 	protected override void Validate()
@@ -109,7 +131,8 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 	}
 
 	/// <inheritdoc />
-	protected override PaperlessBuilder Clone(IResourceConfiguration<CreateContainerParameters> resourceConfiguration) =>
+	protected override PaperlessBuilder Clone(
+		IResourceConfiguration<CreateContainerParameters> resourceConfiguration) =>
 		Merge(DockerResourceConfiguration, new(resourceConfiguration));
 
 	/// <inheritdoc />
@@ -118,5 +141,5 @@ public sealed class PaperlessBuilder : ContainerBuilder<PaperlessBuilder, Paperl
 
 	/// <inheritdoc />
 	protected override PaperlessBuilder Merge(PaperlessConfiguration oldValue, PaperlessConfiguration newValue) =>
-		new(new(oldValue, newValue));
+		new(new PaperlessConfiguration(oldValue, newValue));
 }

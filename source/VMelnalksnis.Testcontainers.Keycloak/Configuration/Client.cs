@@ -17,7 +17,7 @@ public sealed record Client(string Name)
 	public Client(string name, Uri redirectUri)
 		: this(name)
 	{
-		RedirectUris = new[] { redirectUri.AbsoluteUri };
+		RedirectUris = [redirectUri.AbsoluteUri];
 	}
 
 	/// <summary>Gets the client secret.</summary>
@@ -31,8 +31,8 @@ public sealed record Client(string Name)
 	public ServiceAccount? ServiceAccountUser { get; init; }
 
 	/// <summary>Gets the protocol mappers for this client.</summary>
-	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = Array.Empty<ClientProtocolMapper>();
+	public IEnumerable<ClientProtocolMapper> Mappers { get; init; } = [];
 
 	/// <summary>Gets the redirect uris for this client.</summary>
-	public IEnumerable<string> RedirectUris { get; init; } = Array.Empty<string>();
+	public IEnumerable<string> RedirectUris { get; init; } = [];
 }

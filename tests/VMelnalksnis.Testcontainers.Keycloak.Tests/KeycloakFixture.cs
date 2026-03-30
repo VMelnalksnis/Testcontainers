@@ -29,7 +29,7 @@ public sealed class KeycloakFixture : IAsyncLifetime
 		{
 			Secret = Guid.NewGuid().ToString(),
 			ServiceAccountsEnabled = true,
-			Mappers = new[] { mapper, mapperDesktop },
+			Mappers = [mapper, mapperDesktop],
 			ServiceAccountUser = new()
 			{
 				Email = "service-account@example.com",
@@ -47,7 +47,10 @@ public sealed class KeycloakFixture : IAsyncLifetime
 		};
 		Configuration = new("demorealm", new List<Client> { Client }, new List<User> { user });
 
-		Keycloak = new KeycloakBuilder().WithUsername("admin").WithPassword("admin").Build();
+		Keycloak = new KeycloakBuilder("quay.io/keycloak/keycloak:26.5.6")
+			.WithUsername("admin")
+			.WithPassword("admin")
+			.Build();
 	}
 
 	internal KeycloakContainer Keycloak { get; }

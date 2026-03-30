@@ -25,13 +25,12 @@ public sealed class PaperlessFixture : IAsyncLifetime
 
 		_network = new NetworkBuilder().Build();
 
-		_redis = new RedisBuilder()
-			.WithImage("docker.io/library/redis:7.0.11")
+		_redis = new RedisBuilder("docker.io/library/redis:7.0.11")
 			.WithNetwork(_network)
 			.WithNetworkAliases(redis)
 			.Build();
 
-		Paperless = new PaperlessBuilder()
+		Paperless = new PaperlessBuilder($"{PaperlessBuilder.PaperlessImage}:2.20.13")
 			.WithNetwork(_network)
 			.DependsOn(_redis)
 			.WithRedis($"redis://{redis}:{RedisBuilder.RedisPort}")
