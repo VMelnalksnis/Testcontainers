@@ -18,8 +18,14 @@ jobs:
       - id: publish
         run: ./build/pack.sh "${{ github.ref_name }}" "${{ github.run_number }}"
 
+      - name: NuGet Login
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+            user: ${{ secrets.NUGET_USER }}
+
       - name: NuGet Push
-        run: dotnet nuget push "**/*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "**/*.nupkg" --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
         working-directory: ${{ steps.publish.outputs.publish-directory }}
 
       - name: Create release
