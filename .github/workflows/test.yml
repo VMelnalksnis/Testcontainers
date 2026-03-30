@@ -22,8 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-dotnet@v4.3.1
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: |
             8.0.x
@@ -33,17 +33,24 @@ jobs:
 
       - name: Gather Code Coverage
         if: github.event.schedule == null
-        uses: codecov/codecov-action@v5.4.3
+        uses: codecov/codecov-action@v6.0.0
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Gather Test Results
+        uses: codecov/test-results-action@v1.2.1
+        if: always()
+        with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            fail_ci_if_error: true
 
   resharper:
     name: Resharper
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-dotnet@v4.3.1
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-dotnet@v5.2.0
       - run: ./build/build.sh
 
       - name: ReSharper annotations

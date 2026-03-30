@@ -13,8 +13,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-dotnet@v4.3.1
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-dotnet@v5.2.0
       - id: publish
         run: ./build/pack.sh "${{ github.ref_name }}" "${{ github.run_number }}"
 
