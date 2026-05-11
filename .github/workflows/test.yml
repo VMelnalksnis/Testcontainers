@@ -55,7 +55,7 @@ jobs:
       - run: ./build/build.sh
 
       - name: ReSharper annotations
-        uses: VMelnalksnis/resharper-inspect-action@v0.3.0
+        uses: VMelnalksnis/resharper-inspect-action@v0.3.1
         with:
           solution: Testcontainers.sln
           resharper-version: 2023.3.2
