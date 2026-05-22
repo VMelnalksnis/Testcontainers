@@ -17,7 +17,7 @@
 		<PackageVersion Include="System.Text.Encodings.Web" Version="10.0.5"/>
 		<PackageVersion Include="System.Text.Json" Version="10.0.5"/>
 		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556"/>
-		<PackageVersion Include="Testcontainers" Version="4.11.0.0"/>
+		<PackageVersion Include="Testcontainers" Version="4.12.0"/>
 		<PackageVersion Include="Testcontainers.Keycloak" Version="4.11.0"/>
 		<PackageVersion Include="Testcontainers.Redis" Version="4.11.0"/>
 		<PackageVersion Include="xunit" Version="2.9.3"/>
