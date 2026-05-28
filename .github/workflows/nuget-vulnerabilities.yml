@@ -25,5 +25,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.2
-      - uses: actions/setup-dotnet@v5.2.0
+      - uses: actions/setup-dotnet@v5.3.0
       - run: ./build/nuget_vulnerabilities.sh
