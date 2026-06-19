@@ -16,7 +16,7 @@ jobs:
         id-token: write
         contents: write
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v7.0.0
       - uses: actions/setup-dotnet@v5.2.0
       - id: publish
         run: ./build/pack.sh "${{ github.ref_name }}" "${{ github.run_number }}"
